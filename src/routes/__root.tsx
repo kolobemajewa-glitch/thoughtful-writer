@@ -93,6 +93,12 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
       },
       { property: "og:type", content: "website" },
       { name: "twitter:card", content: "summary" },
+      { name: "twitter:title", content: "MailCraft — AI Email Generator" },
+      { name: "description", content: "AI-powered web app generates professional workplace emails from user prompts." },
+      { property: "og:description", content: "AI-powered web app generates professional workplace emails from user prompts." },
+      { name: "twitter:description", content: "AI-powered web app generates professional workplace emails from user prompts." },
+      { property: "og:image", content: "https://pub-bb2e103a32db4e198524a2e9ed8f35b4.r2.dev/45dd8e72-5063-4fd1-8954-05cbea9eee0d/id-preview-5dc45d5a--18ec9a0a-4e27-4e57-a064-0bc9d5d1b4d6.lovable.app-1782335180005.png" },
+      { name: "twitter:image", content: "https://pub-bb2e103a32db4e198524a2e9ed8f35b4.r2.dev/45dd8e72-5063-4fd1-8954-05cbea9eee0d/id-preview-5dc45d5a--18ec9a0a-4e27-4e57-a064-0bc9d5d1b4d6.lovable.app-1782335180005.png" },
     ],
     links: [
       {
