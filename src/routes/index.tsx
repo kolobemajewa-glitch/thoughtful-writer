@@ -22,7 +22,12 @@ import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
 import { Badge } from "@/components/ui/badge";
 import { toast } from "sonner";
 
+type IndexSearch = { template?: string };
+
 export const Route = createFileRoute("/")({
+  validateSearch: (s: Record<string, unknown>): IndexSearch => ({
+    template: typeof s.template === "string" ? s.template : undefined,
+  }),
   head: () => ({
     meta: [
       { title: "Email Generator — MailCraft" },
@@ -54,7 +59,7 @@ type EmailDraft = {
 
 function GeneratorPage() {
   const navigate = useNavigate();
-  const search = useRouterState({ select: (s) => s.location.search as Record<string, string> });
+  const search = Route.useSearch();
 
   const [purpose, setPurpose] = useState("");
   const [recipient, setRecipient] = useState("");
@@ -73,7 +78,7 @@ function GeneratorPage() {
         if (t.recipient) setRecipient(t.recipient);
         if (t.keyPoints) setKeyPoints(t.keyPoints);
         if (t.tone) setTone(t.tone);
-        navigate({ to: "/", search: {}, replace: true });
+        navigate({ to: "/", search: {} as IndexSearch, replace: true });
       } catch {
         /* ignore */
       }
