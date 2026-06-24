@@ -1,5 +1,5 @@
 import { createServerFn } from "@tanstack/react-start";
-import { generateText, Output } from "ai";
+import { generateText } from "ai";
 import { z } from "zod";
 import { createLovableAiGatewayProvider } from "./ai-gateway.server";
 
@@ -35,12 +35,15 @@ export const generateEmail = createServerFn({ method: "POST" })
     const prompt = `Write a workplace email with the following details.\n\nPurpose: ${data.purpose}\nRecipient: ${data.recipient}\nKey points to cover:\n${data.keyPoints}\nTone: ${data.tone} — ${toneGuide[data.tone]}\nSender name: ${data.senderName || "(leave a placeholder like [Your Name])"}\n\nRequirements:\n- Subject line: clear and specific, under 80 chars\n- Greeting: appropriate to the recipient and tone\n- Body: 2–4 short paragraphs, plain text, no markdown\n- Closing: professional sign-off line plus sender name on its own line`;
 
     try {
-      const { experimental_output } = await generateText({
+      const { text } = await generateText({
         model: gateway("google/gemini-3-flash-preview"),
-        experimental_output: Output.object({ schema: EmailSchema }),
+        system:
+          'You are an expert email writer. Respond ONLY with a JSON object matching this shape: {"subject": string, "greeting": string, "body": string, "closing": string}. No markdown, no code fences, no extra commentary.',
         prompt,
       });
-      return experimental_output;
+      const cleaned = text.trim().replace(/^```(?:json)?/i, "").replace(/```$/i, "").trim();
+      const parsed = EmailSchema.parse(JSON.parse(cleaned));
+      return parsed;
     } catch (err: unknown) {
       const msg = err instanceof Error ? err.message : String(err);
       if (msg.includes("429")) {
