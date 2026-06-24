@@ -113,7 +113,7 @@ function TemplatesPage() {
         tone: tpl.tone,
       }),
     );
-    navigate({ to: "/", search: { template: payload } as never });
+    navigate({ to: "/", search: { template: payload } });
   }
 
   return (
